@@ -8,6 +8,8 @@
 
     <!-- dependencies -->
     <script src="bower_components/jquery/dist/jquery.js"></script>
+    <script src="bower_components/underscore/underscore.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script>
       // YOU DO NOT NEED TO EDIT THIS CODE
       if (!/(&|\?)username=/.test(window.location.search)) {
@@ -26,19 +28,17 @@
   <body>
   <div class="container-fluid">
     <div id="main">
-      <h1>CHATTERBOX</h1>
-      <!-- Your HTML goes here! -->
+      <h1>CHATTERBOX</h1>  
       <div id="roomSelect">
-        <!-- <div class="dropdown">
-          <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Dropdown Example
-          <span class="caret"></span></button>
+        <button class="btn btn-block" id="rooms">Get rooms</button>
+        <div class="dropdown">
+        <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Dropdown Example
+        <span class="caret"></span></button>
           <ul class="dropdown-menu">
-            <li><a href="#">HTML</a></li>
-            <li><a href="#">CSS</a></li>
-            <li><a href="#">JavaScript</a></li>
           </ul>
-        </div> -->
       </div>
+      </div>
+        
         <form id="send" class="form-horizontal">
           <input type="text" class= "submit form-control" value="Daniel & Christine rule!">
           </br>
@@ -55,24 +55,48 @@
       <button class="btn btn-block" id="display">Display messages</button>
 
       <script>
-        $(document).ready(function() {
-          $('#display').click(function() {
-          console.log('clicked!');
-          //call fetch
+        $(document).ready(function() { 
           app.fetch();
 
-          //iterate from bottom bc messages are not in chronological
-          for (var i = app.messages.length - 1; i > 0; i--) {
-            var message = app.messages[i].text;
-            // console.log(message);
-            var $message = $(`<div class='${app.messages[i].username}'>${app.messages[i].username}: ${message}</div>`);
-            //check for empty or script tags
-            if (message && message.indexOf('script') !== -1) {
-              continue;
-            }
-            $message.appendTo($('#chats'));
+
+          $('#display').click(function() {
+            console.log('clicked!');
+            //call fetch
+            // app.fetch();
+            //iterate from bottom bc messages are not in chronological
+            for (var i = app.messages.length - 1; i > 0; i--) {
+              var message = app.messages[i].text;
+              // console.log(message);
+              var $message = $(`<div class='${app.messages[i].username}'>${app.messages[i].username}: ${message}</div>`);
+              //check for empty or script tags
+              if (message && message.indexOf('script') !== -1) {
+                continue;
+              }
+              $message.appendTo($('#chats'));
             }
           });
+
+          $('#rooms').click(function() {
+            console.log('clicked!');
+            //call fetch
+            // app.fetch();
+            // iterate from bottom bc messages are not in chronological
+            for (var i = app.messages.length - 1; i > 0; i--) {
+                app.rooms.add(app.messages[i].roomname);
+            }
+              
+
+            for (let item of app.rooms) {
+              var room = item;
+              // console.log(message);
+              var $room = $(`<li>${room}</li>`);
+              
+              $room.appendTo($('#roomSelect .dropdown-menu'));
+            }
+             
+  
+          });
+
         });
       </script>
 

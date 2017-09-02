@@ -5,8 +5,10 @@ class App {
     this.server = 'http://parse.sfm6.hackreactor.com';
     this.friends = [];
     this.messages = [];
+    this.rooms = new Set();
   }
   init() {
+    this.fetch();
     
   }
   send(message) {
@@ -43,7 +45,7 @@ class App {
         console.error('chatterbox: Failed to get message', data);
       }
   
-  });
+    });
     
   }
   clearMessages () {
@@ -54,7 +56,9 @@ class App {
     $('#chats').append('<p>TESTING JQUERY!!! IMCHANGING UR TEXT LOLLL</p>');
   }
   renderRoom (roomName) {
-    $('#roomSelect').append('<p></p>');
+    this.fetch();
+    console.log(app.data);
+    // $('#roomSelect').append('<p></p>');
   }
   handleUsernameClick () {
     alert('hi!');
@@ -134,9 +138,12 @@ $(document).ready ( function() {
 
 // });
 var pushToMessage = function (data) {
-    app.messages = data.results;
-    // console.log(app.messages);
+  app.messages = data.results;
+  // app.data = data;
+  // console.log('appmessages', app.messages);
+  // console.log(app.messages);
 };
+
 
 
 
