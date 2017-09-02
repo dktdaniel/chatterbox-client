@@ -11,13 +11,13 @@ class App {
   }
   send(message) {
     $.ajax({
-        // This is the url you should use to communicate with the parse API server.
-      url: 'http://parse.sfm6.hackreactor.com/',
+      // This is the url you should use to communicate with the parse API server.
+      url: 'http://parse.sfm6.hackreactor.com/chatterbox/classes/messages',
       type: 'POST',
-      data: message,
+      data: '{"objectId":"WHATEVER","username":"DANIEL AND CHRISTINE","roomname":"original","text":"HELLOOOOOOOOOO!!!!","createdAt":"2017-09-01T19:05:17.399Z","updatedAt":"2017-09-01T19:05:17.399Z"}',
       contentType: 'application/json',
       success: function (data) {
-        console.log('chatterbox: Message sent');
+        console.log(JSON.stringify(data));
       },
       error: function (data) {
         // See: https://developer.mozilla.org/en-US/docs/Web/API/console.error
@@ -28,20 +28,21 @@ class App {
   fetch() {
     //put GET request here!!!!
     $.ajax({
-  // This is the url you should use to communicate with the parse API server.
+      // This is the url you should use to communicate with the parse API server.
       url: 'http://parse.sfm6.hackreactor.com/chatterbox/classes/messages',
       type: 'GET',
       // data: JSON.stringify(message),
       contentType: 'application/json',
       success: function (data) {
-        console.log(JSON.stringify(data));
+        // console.log(data);
+        pushToMessage(data);
       },
       error: function (data) {
         // See: https://developer.mozilla.org/en-US/docs/Web/API/console.error
-        console.error('chatterbox: Failed to send message', data);
+        console.error('chatterbox: Failed to get message', data);
       }
-
-    });
+  
+  });
     
   }
   clearMessages () {
@@ -131,31 +132,11 @@ $(document).ready ( function() {
 //   }
 
 // });
-
-//GETTING ALL MESSAGES
-$(document).ready(function() {
-  var result = $.ajax({
-  // This is the url you should use to communicate with the parse API server.
-  url: 'http://parse.sfm6.hackreactor.com/chatterbox/classes/messages',
-  type: 'GET',
-  // data: JSON.stringify(message),
-  contentType: 'application/json',
-  success: function (data) {
-    // console.log(data);
-    pushToMessage(data);
-  },
-  error: function (data) {
-    // See: https://developer.mozilla.org/en-US/docs/Web/API/console.error
-    console.error('chatterbox: Failed to get message', data);
-  }
-  
-});
-  // console.log(result);
-  var pushToMessage = function (data) {
+var pushToMessage = function (data) {
     app.messages = data.results;
     // console.log(app.messages);
-  };
+};
 
-});
+
 
 

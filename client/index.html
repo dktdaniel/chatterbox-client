@@ -28,45 +28,50 @@
     <div id="main">
       <h1>CHATTERBOX</h1>
       <!-- Your HTML goes here! -->
-      <!-- <div class="username">HI!!!</div> -->
-      <div id="roomSelect"></div>
+      <div id="roomSelect">
+        <!-- <div class="dropdown">
+          <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Dropdown Example
+          <span class="caret"></span></button>
+          <ul class="dropdown-menu">
+            <li><a href="#">HTML</a></li>
+            <li><a href="#">CSS</a></li>
+            <li><a href="#">JavaScript</a></li>
+          </ul>
+        </div> -->
+      </div>
         <form id="send" class="form-horizontal">
           <input type="text" class= "submit form-control" value="Wsupppp!!">
           </br>
           <button id="submit" class="btn btn-block">Submit</button>
         </form>
+
     </div>
+
     <div id="chats">
       <button class="btn btn-block" id="display">Display messages</button>
+
       <script>
         $(document).ready(function() {
           $('#display').click(function() {
           console.log('clicked!');
-          console.log(app.messages);
+          //call fetch
+          app.fetch();
 
-          var $chats = $('chats');
-          $chats.html('');
-
-          var index = app.messages.length - 1;
-          while(index >= 0) {
-            var message = app.messages[index];
-            var $message = $('<div></div');
-            if (app.messages[index].text === undefined) {
-              $message.text(app.messages[index].text = '');
+          //iterate from bottom bc messages are not in chronological
+          for (var i = app.messages.length - 1; i > 0; i--) {
+            var message = app.messages[i].text;
+            // console.log(message);
+            var $message = $(`<div class='${app.messages[i].username}'>${app.messages[i].username}: ${message}</div>`);
+            //check for empty or script tags
+            if (message && message.indexOf('script') !== -1) {
+              continue;
             }
-            $message.text(app.messages[index].text);
-            $message.appendTo($chats);
-            index -= 1;
-          }
-
-
-          
-
+            $message.appendTo($('#chats'));
+            }
           });
-
-          
         });
       </script>
+
     </div>
   </div>
   </body>
