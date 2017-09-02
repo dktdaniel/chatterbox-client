@@ -6,6 +6,8 @@ class App {
     this.friends = [];
     this.messages = [];
     this.rooms = new Set();
+    this.room;
+    this.username = newSearch;
   }
   init() {
     this.fetch();
@@ -16,8 +18,8 @@ class App {
       // This is the url you should use to communicate with the parse API server.
       url: 'http://parse.sfm6.hackreactor.com/chatterbox/classes/messages',
       type: 'POST',
-      // data: '{"objectId":"WHATEVER","username":"DANIEL AND CHRISTINE","roomname":"original","text":"HELLOOOOOOOOOO!!!!","createdAt":"2017-09-01T19:05:17.399Z","updatedAt":"2017-09-01T19:05:17.399Z"}',
-      data: `{"username":"DANIEL AND CHRISTINE","roomname":"original","text":"${message}"}`,
+      data: JSON.stringify(message),
+      // '{"objectId":"WHATEVER","username":"DANIEL AND CHRISTINE","roomname":"original","text":"HELLOOOOOOOOOO!!!!","createdAt":"2017-09-01T19:05:17.399Z","updatedAt":"2017-09-01T19:05:17.399Z"}',
       contentType: 'application/json',
       success: function (data) {
         console.log(JSON.stringify(data));
@@ -29,13 +31,13 @@ class App {
     });
   }
   fetch() {
-    //put GET request here!!!!
     $.ajax({
       // This is the url you should use to communicate with the parse API server.
       url: 'http://parse.sfm6.hackreactor.com/chatterbox/classes/messages',
       type: 'GET',
       // data: JSON.stringify(message),
       contentType: 'application/json',
+      data: 'order=-createdAt', // most recent messages first
       success: function (data) {
         // console.log(data);
         pushToMessage(data);
@@ -45,6 +47,14 @@ class App {
         console.error('chatterbox: Failed to get message', data);
       }
   
+    }).done(function() {
+      displayRooms();
+      $('li').click(function(event) {
+        // console.log('li clicked!');
+        this.room = event.target.id;
+        // console.log(this.room);
+        console.log(this.username);
+      });
     });
     
   }
@@ -121,22 +131,7 @@ $(document).ready ( function() {
 
 
 
-//posting a message
-// $.ajax({
-//   // This is the url you should use to communicate with the parse API server.
-//   url: 'http://parse.sfm6.hackreactor.com/chatterbox/classes/messages',
-//   type: 'POST',
-//   data: '{"objectId":"WHATEVER","username":"DANIEL AND CHRISTINE","roomname":"original","text":"HELLOOOOOOOOOO!!!!","createdAt":"2017-09-01T19:05:17.399Z","updatedAt":"2017-09-01T19:05:17.399Z"}',
-//   contentType: 'application/json',
-//   success: function (data) {
-//     console.log(JSON.stringify(data));
-//   },
-//   error: function (data) {
-//     // See: https://developer.mozilla.org/en-US/docs/Web/API/console.error
-//     console.error('chatterbox: Failed to send message', data);
-//   }
 
-// });
 var pushToMessage = function (data) {
   app.messages = data.results;
   // app.data = data;
@@ -149,3 +144,38 @@ var pushToMessage = function (data) {
 
 
 
+//posting a message
+// $.ajax({
+//   // This is the url you should use to communicate with the parse API server.
+//   url: 'http://parse.sfm6.hackreactor.com/chatterbox/classes/messages',
+//   type: 'POST',
+//   data: JSON.stringify({
+//     username: 'DCDCDCDC',
+//     roomname: 'lobby',
+//     text: 'OMG IS THIS WORKING??????'}),
+//   // '{"objectId":"WHATEVER","username":"DANIEL AND CHRISTINE","roomname":"original","text":"HELLOOOOOOOOOO!!!!","createdAt":"2017-09-01T19:05:17.399Z","updatedAt":"2017-09-01T19:05:17.399Z"}',
+//   contentType: 'application/json',
+//   success: function (data) {
+//     console.log(JSON.stringify(data));
+//   },
+//   error: function (data) {
+//     // See: https://developer.mozilla.org/en-US/docs/Web/API/console.error
+//     console.error('chatterbox: Failed to send message', data);
+//   }
+
+// });
+
+
+var displayRooms = function() {
+            for (var i = app.messages.length - 1; i > 0; i--) {
+              app.rooms.add(app.messages[i].roomname);
+            }
+              
+            for (let item of app.rooms) {
+              var room = item;
+              // console.log(message);
+              var $room = $(`<li id=${room}>${room}</li>`);
+              
+              $room.appendTo($('#roomSelect .dropdown-menu'));
+            }
+          };

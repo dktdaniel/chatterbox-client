@@ -29,73 +29,68 @@
   <div class="container-fluid">
     <div id="main">
       <h1>CHATTERBOX</h1>  
+
+
+      <!-- ROOM SELECT AND DROPDOWN -->
       <div id="roomSelect">
         <button class="btn btn-block" id="rooms">Get rooms</button>
         <div class="dropdown">
-        <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Dropdown Example
+        <button class="btn btn-block btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Select room
         <span class="caret"></span></button>
           <ul class="dropdown-menu">
           </ul>
       </div>
       </div>
-        
+
+
+        <!-- MESSAGE SUBMIT FORM -->
         <form id="send" class="form-horizontal">
-          <input type="text" class= "submit form-control" value="Daniel & Christine rule!">
+          <input type="text" class= "submit form-control" value="Message">
           </br>
           <button id="submit" class="btn btn-block">Submit</button>
         </form>
+
+        <!-- PERSONAL: TO-DO LIST -->
         <ul>Things left to do:
+        <li>Setup basic message posting without username</li>
         <li>Allow users to add and enter rooms</li>
         <li>Add friends by clicking on a username</li>
         <li>Filter messages by username</li>
         </ul>
     </div>
 
+        <!-- DISPLAY EXISTING MESSAGES -->
     <div id="chats">
       <button class="btn btn-block" id="display">Display messages</button>
 
       <script>
+        // FETCH ONLY AFTER DOCUMENT READY
         $(document).ready(function() { 
           app.fetch();
+          
 
-
+          // PULL MESSAGES
           $('#display').click(function() {
-            console.log('clicked!');
+            console.log('display messages clicked!');
             //call fetch
             // app.fetch();
             //iterate from bottom bc messages are not in chronological
-            for (var i = app.messages.length - 1; i > 0; i--) {
+            // for (var i = app.messages.length - 1; i > 0; i--) {
+            for (var i = 0; i < app.messages.length - 1; i++) {
               var message = app.messages[i].text;
               // console.log(message);
               var $message = $(`<div class='${app.messages[i].username}'>${app.messages[i].username}: ${message}</div>`);
               //check for empty or script tags
-              if (message && message.indexOf('script') !== -1) {
+              if (message && message.includes('script') !== -1) {
                 continue;
               }
               $message.appendTo($('#chats'));
             }
           });
 
-          $('#rooms').click(function() {
-            console.log('clicked!');
-            //call fetch
-            // app.fetch();
-            // iterate from bottom bc messages are not in chronological
-            for (var i = app.messages.length - 1; i > 0; i--) {
-                app.rooms.add(app.messages[i].roomname);
-            }
-              
+          
+          
 
-            for (let item of app.rooms) {
-              var room = item;
-              // console.log(message);
-              var $room = $(`<li>${room}</li>`);
-              
-              $room.appendTo($('#roomSelect .dropdown-menu'));
-            }
-             
-  
-          });
 
         });
       </script>
