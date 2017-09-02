@@ -14,7 +14,8 @@ class App {
       // This is the url you should use to communicate with the parse API server.
       url: 'http://parse.sfm6.hackreactor.com/chatterbox/classes/messages',
       type: 'POST',
-      data: '{"objectId":"WHATEVER","username":"DANIEL AND CHRISTINE","roomname":"original","text":"HELLOOOOOOOOOO!!!!","createdAt":"2017-09-01T19:05:17.399Z","updatedAt":"2017-09-01T19:05:17.399Z"}',
+      // data: '{"objectId":"WHATEVER","username":"DANIEL AND CHRISTINE","roomname":"original","text":"HELLOOOOOOOOOO!!!!","createdAt":"2017-09-01T19:05:17.399Z","updatedAt":"2017-09-01T19:05:17.399Z"}',
+      data: `{"username":"DANIEL AND CHRISTINE","roomname":"original","text":"${message}"}`,
       contentType: 'application/json',
       success: function (data) {
         console.log(JSON.stringify(data));
@@ -136,6 +137,7 @@ var pushToMessage = function (data) {
     app.messages = data.results;
     // console.log(app.messages);
 };
+
 
 
 
