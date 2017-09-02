@@ -1,8 +1,10 @@
 class App {
-  constructor(name, message, server) {
+  constructor(name, message, server, friends) {
     this.name = name;
     this.message = message;
     this.server = 'http://parse.sfm6.hackreactor.com';
+    this.friends = [];
+    this.messages = [];
   }
   init() {
     
@@ -26,13 +28,13 @@ class App {
   fetch() {
     //put GET request here!!!!
     $.ajax({
-      // This is the url you should use to communicate with the parse API server.
-      url: 'http://parse.sfm6.hackreactor.com',
+  // This is the url you should use to communicate with the parse API server.
+      url: 'http://parse.sfm6.hackreactor.com/chatterbox/classes/messages',
       type: 'GET',
-      data: JSON.stringify(message),
+      // data: JSON.stringify(message),
       contentType: 'application/json',
       success: function (data) {
-        console.log('chatterbox: Message sent');
+        console.log(JSON.stringify(data));
       },
       error: function (data) {
         // See: https://developer.mozilla.org/en-US/docs/Web/API/console.error
@@ -75,19 +77,85 @@ $(document).ready ( function() {
 //connect with server
 //friends array
 //connect to server, query for list of usernames & messages
-$.ajax({
-      // This is the url you should use to communicate with the parse API server.
-      url: 'http://parse.sfm6.hackreactor.com/1/users',
-      type: 'GET',
-      // data: JSON.stringify(message),
-      contentType: 'application/json',
-      success: function (data) {
-        console.log(JSON.stringify(data));
-      },
-      error: function (data) {
-        // See: https://developer.mozilla.org/en-US/docs/Web/API/console.error
-        console.error('chatterbox: Failed to send message', data);
-      }
 
-    });
+
+//sign up
+
+// $.ajax({
+//   // This is the url you should use to communicate with the parse API server.
+//   url: 'http://parse.sfm6.hackreactor.com/chatterbox/classes/users',
+//   type: 'POST',
+//   data: '{"username":"NOPEstillUS","password":"one","phone":"555-555-1212"}',
+//   contentType: 'application/json',
+//   success: function (data) {
+//     console.log(JSON.stringify(data));
+//   },
+//   error: function (data) {
+//     // See: https://developer.mozilla.org/en-US/docs/Web/API/console.error
+//     console.error('chatterbox: Failed to send message', data);
+//   }
+
+// });
+
+// $.ajax({
+//   // This is the url you should use to communicate with the parse API server.
+//   url: 'http://parse.sfm6.hackreactor.com/chatterbox/classes/users',
+//   type: 'GET',
+//   // data: JSON.stringify(message),
+//   contentType: 'application/json',
+//   success: function (data) {
+//     console.log(JSON.stringify(data));
+//   },
+//   error: function (data) {
+//     // See: https://developer.mozilla.org/en-US/docs/Web/API/console.error
+//     console.error('chatterbox: Failed to send message', data);
+//   }
+
+// });
+
+
+
+//posting a message
+// $.ajax({
+//   // This is the url you should use to communicate with the parse API server.
+//   url: 'http://parse.sfm6.hackreactor.com/chatterbox/classes/messages',
+//   type: 'POST',
+//   data: '{"objectId":"WHATEVER","username":"DANIEL AND CHRISTINE","roomname":"original","text":"HELLOOOOOOOOOO!!!!","createdAt":"2017-09-01T19:05:17.399Z","updatedAt":"2017-09-01T19:05:17.399Z"}',
+//   contentType: 'application/json',
+//   success: function (data) {
+//     console.log(JSON.stringify(data));
+//   },
+//   error: function (data) {
+//     // See: https://developer.mozilla.org/en-US/docs/Web/API/console.error
+//     console.error('chatterbox: Failed to send message', data);
+//   }
+
+// });
+
+//GETTING ALL MESSAGES
+$(document).ready(function() {
+  var result = $.ajax({
+  // This is the url you should use to communicate with the parse API server.
+  url: 'http://parse.sfm6.hackreactor.com/chatterbox/classes/messages',
+  type: 'GET',
+  // data: JSON.stringify(message),
+  contentType: 'application/json',
+  success: function (data) {
+    // console.log(data);
+    pushToMessage(data);
+  },
+  error: function (data) {
+    // See: https://developer.mozilla.org/en-US/docs/Web/API/console.error
+    console.error('chatterbox: Failed to get message', data);
+  }
+  
+});
+  // console.log(result);
+  var pushToMessage = function (data) {
+    app.messages = data.results;
+    // console.log(app.messages);
+  };
+
+});
+
 
